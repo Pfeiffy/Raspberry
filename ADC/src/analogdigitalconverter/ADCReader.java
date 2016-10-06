@@ -19,7 +19,7 @@ public class ADCReader {
 	// 24: DIN on the ADC, OUT on the GPIO. Same reason as above.
 	// SPI: Serial Peripheral Interface
 	private static Pin spiClk = RaspiPin.GPIO_14; // Pin #18, clock
-	private static Pin spiMiso = RaspiPin.GPIO_13; // Pin #23, data in. MISO:
+	private static Pin spiMiso = RaspiPin.GPIO_13; // Pin #23, data in. MISO: 
 													// Master In Slave Out
 	private static Pin spiMosi = RaspiPin.GPIO_12; // Pin #24, data out. MOSI:
 													// Master Out Slave In
