@@ -14,7 +14,7 @@ import com.pi4j.io.gpio.RaspiPin;
 public class ADCReader {
 	private final static boolean DISPLAY_DIGIT = false;
 	private final static boolean DEBUG = false;
-	// Note: "Mismatch" 23-24. The wiring says DOUT->#23, DIN->#24
+	// Note: "Mismatch" 23-24. The wiring says DOUT->#23, DIN->#24 
 	// 23: DOUT on the ADC is IN on the GPIO. ADC:Slave, GPIO:Master
 	// 24: DIN on the ADC, OUT on the GPIO. Same reason as above.
 	// SPI: Serial Peripheral Interface
