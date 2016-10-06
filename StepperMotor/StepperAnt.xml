@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project StepperMotor with Jar-in-Jar Loader">
+	<!--this file was created by Eclipse Runnable JAR Export Wizard-->
+	<!--ANT 1.7 is required                                        -->
+	<target name="create_run_jar">
+		<jar destfile="C:/eclipseLuna/workspace/StepperMotor/stepper.jar">
+			<manifest>
+				<attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader" />
+				<attribute name="Rsrc-Main-Class" value="StepperMotorGpioExample" />
+				<attribute name="Class-Path" value="." />
+				<attribute name="Rsrc-Class-Path" value="./ junit.jar pi4j-core.jar pi4j-core-javadoc.jar pi4j-core-sources.jar pi4j-device.jar pi4j-device-javadoc.jar pi4j-device-sources.jar pi4j-example.jar pi4j-example-javadoc.jar pi4j-example-sources.jar pi4j-gpio-extension.jar pi4j-gpio-extension-javadoc.jar pi4j-gpio-extension-sources.jar pi4j-service.jar pi4j-service-javadoc.jar pi4j-service-sources.jar" />
+			</manifest>
+			<zipfileset src="jar-in-jar-loader.zip" />
+			<fileset dir="C:/eclipseLuna/workspace/StepperMotor/bin" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="junit.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-core.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-core-javadoc.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-core-sources.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-device.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-device-javadoc.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-device-sources.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-example.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-example-javadoc.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-example-sources.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-gpio-extension.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-gpio-extension-javadoc.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-gpio-extension-sources.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-service.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-service-javadoc.jar" />
+			<zipfileset dir="C:\Users\Dirk\Downloads\pi4j-1.0\pi4j-1.0\lib" includes="pi4j-service-sources.jar" />
+		</jar>
+		<scp file="C:/eclipseLuna/workspace/StepperMotor/stepper.jar" trust="true" todir="pi@raspberrypi:" password="raspberry" />
+
+		<sshexec host="raspberrypi" trust="true" username="pi" password="raspberry" command="sudo java -Xdebug -Xrunjdwp:transport=dt_socket,address=5005,server=y,suspend=y -jar stepper.jar" />
+
+	</target>
+</project>

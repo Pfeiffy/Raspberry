@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.ui.IEditorInput"
+            nameFilter="*.*"
+            id="SimplePopupMenu.contribution1">
+         <menu
+               label="ShowIFile"
+               path="additions"
+               id="SimplePopupMenu.menu1">
+         </menu>
+         <action
+               label="SimpleMessageAction"
+               class="simplepopupmenu.popup.actions.SimpleMessageAction"
+               menubarPath="SimplePopupMenu.menu1"
+               enablesFor="1"
+               id="SimplePopupMenu.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+</plugin>

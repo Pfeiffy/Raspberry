@@ -1,0 +1,188 @@
+package readserialport;
+
+//dies kommt von der Seite: https://blogs.oracle.com/acaicedo/entry/beyond_beauty_javafx_i2c_parallax
+import java.io.IOException;
+
+import com.pi4j.io.i2c.I2CBus;
+import com.pi4j.io.i2c.I2CDevice;
+import com.pi4j.io.i2c.I2CFactory;
+
+public class Sensors {
+
+	I2CBus bus;
+	I2CDevice device;
+	byte[] accelData, accelData0, accelData1, accelData2, accelData3,
+			accelData4, accelData5;
+
+	public Sensors() {
+		System.out.println("Starting sensors reading:");
+		// get I2C bus instance
+		try {
+			// get i2c bus
+			bus = I2CFactory.getInstance(I2CBus.BUS_1);
+			System.out.println("Connected to bus OK!");
+
+			// get device itself
+			device = bus.getDevice(0x68);
+			System.out.println("Connected to device OK!");
+
+			// start sensing, using config registries 6B and 6C
+			device.write(0x6B, (byte) 0b00000000);
+			device.write(0x6C, (byte) 0b00000000);
+			System.out.println("Configuring Device OK!");
+
+			// config accel
+			device.write(0x1C, (byte) 0b00011001);
+			System.out.println("Configuring sensors OK!");
+
+			startReading();
+
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	// Create a separate thread for reading the sensors
+
+	public void startReading() {
+
+		new Thread() {
+			public void run() {
+				try {
+
+					readingSensors();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Thread Running");
+			}
+		}.start();
+
+	}
+
+	private void readingSensors() throws IOException, InterruptedException {
+		while (true) {
+			// alle 6 Register einzeln lesen
+			//32768
+			
+			accelData0 = new byte[1];
+			accelData1 = new byte[1];
+			accelData2 = new byte[1];
+			accelData3 = new byte[1];
+			accelData4 = new byte[1];
+			accelData5 = new byte[1];
+
+			int r0 = device.read(0x3B, accelData0, 0, 1);
+			int r1 = device.read(0x3C, accelData1, 0, 1);
+			int r2 = device.read(0x3D, accelData2, 0, 1);
+			int r3 = device.read(0x3E, accelData3, 0, 1);
+			int r4 = device.read(0x3F, accelData4, 0, 1);
+			int r5 = device.read(0x40, accelData5, 0, 1);
+
+			double accelX0 = asInt(accelData0[0]) * 256 + asInt(accelData1[0]);
+			double accelY0 = asInt(accelData2[0]) * 256 + asInt(accelData3[0]);
+			double accelZ0 = asInt(accelData4[0]) * 256 + asInt(accelData5[0]);
+			if(accelX0>=32768){
+				accelX0 =-((65535-accelX0)+1);
+			}			if(accelY0>=32768){
+				accelY0 =-((65535-accelY0)+1);
+			}			if(accelZ0>=32768){
+				accelZ0 =-((65535-accelZ0)+1);
+			}
+
+			double accelX0_scaled = accelX0 / 16384;
+			double accelY0_scaled = accelY0 / 16384;
+			double accelZ0_scaled = accelZ0 / 16384;
+
+			double x_rotation_0 = get_x_rotation(accelX0_scaled,
+					accelY0_scaled, accelZ0_scaled);
+			double y_rotation_0 = get_y_rotation(accelX0_scaled,
+					accelY0_scaled, accelZ0_scaled);
+
+			// You can read one registry at a time,
+			// or you can read multiple consecutive ones,
+			// in our case we are reading 6 consecutive registries
+			// from 0x3B, meaning we are reading all the
+			// accelerometer measurements
+			// alle 6 Register auf einmal lesen
+			accelData = new byte[6];
+			int r = device.read(0x3B, accelData, 0, 6);
+			System.out.println("------------Test----------");
+			// System.exit(0);
+
+			if (r != 6) {
+				System.out.println("Error reading accel data, < 6 bytes");
+			}
+			// Convert the values to integers, using the
+			// helper method asInt
+			double accelX = asInt(accelData[0]) * 256 + asInt(accelData[1]);
+			if(accelX>=32768){
+				accelX =-((65535-accelX)+1);
+			}
+			double accelY = asInt(accelData[2]) * 256 + asInt(accelData[3]);
+			if(accelY>=32768){
+				accelY =-((65535-accelY)+1);
+			}
+			double accelZ = asInt(accelData[4]) * 256 + asInt(accelData[5]);
+			if(accelZ>=32768){
+				accelZ =-((65535-accelZ)+1);
+			}
+
+			double accelX_scaled = accelX / 16384;
+			double accelY_scaled = accelY / 16384;
+			double accelZ_scaled = accelZ / 16384;
+
+			double x_rotation = get_x_rotation(accelX_scaled, accelY_scaled,
+					accelZ_scaled);
+			double y_rotation = get_y_rotation(accelX_scaled, accelY_scaled,
+					accelZ_scaled);
+
+			System.out.println();
+			System.out.println("accelerometer data");
+			System.out.println("------------------");
+
+//			System.out.println("accelx: " + accelX + " / accelx0: " + + accelX0);
+//			System.out.println("accely: " + accelY + " / accely0: " + + accelY0);
+//			System.out.println("accelz: " + accelZ + " / accelz0: " + + accelZ0);
+//
+//			System.out.println(" accelX_scaled: " + accelX_scaled+ " accelX0_scaled: " + accelX0_scaled);
+//			System.out.println(" accelY_scaled: " + accelY_scaled+ " accelY0_scaled: " + accelY0_scaled);
+//			System.out.println(" accelZ_scaled: " + accelZ_scaled+ " accelZ0_scaled: " + accelZ0_scaled);
+			
+			System.out.println("x rotation: " + x_rotation + " / x rotation: " + x_rotation_0);
+			System.out.println("y rotation: " + y_rotation + " / y rotation: " + y_rotation_0);
+
+
+			// Use the values as you want
+			// ...
+			Thread.sleep(200);
+		}
+	}
+
+	double get_y_rotation(double x, double y, double z) {
+		double radians = Math.atan2(x, dist(y, z));
+		return -Math.toDegrees(radians);
+	}
+
+	double get_x_rotation(double x, double y, double z) {
+		double radians = Math.atan2(y, dist(x, z));
+		return Math.toDegrees(radians);
+	}
+
+	double dist(double a, double b) {
+		return Math.sqrt((a * a) + (b * b));
+	}
+
+	// Helper method
+	private static int asInt(byte b) {
+		int i = b;
+		if (i < 0) {
+			i = i + 256;
+		}
+		return i;
+	}
+}

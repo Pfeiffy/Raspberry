@@ -1,0 +1,15 @@
+1. Motor
+IN1--> 15 (GPIO3)
+IN2--> 13 (GPIO2)
+IN3--> 12 (GPIO1)
+IN4--> 11 (GPIO0)
+5-12- --> extern GND und 39 (GND bei RPI)
+5-12+ --> extern +5V
+
+1. Motor
+IN1--> 7 (GPIO7)
+IN2--> 22 (GPIO6)
+IN3--> 18 (GPIO5)
+IN4--> 16 (GPIO4)
+5-12- --> extern GND
+5-12+ --> extern +5V

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Gyro">
+	<!--this file was created by Eclipse Runnable JAR Export Wizard-->
+	<!--ANT 1.7 is required                                        -->
+	<target name="create_run_jar">
+		<jar destfile="C:/eclipseLuna/workspace/Gyro/gyro.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="GyroClass" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="C:/eclipseLuna/workspace/Gyro/bin" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/junit.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-core.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-core-javadoc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-core-sources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-device.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-device-javadoc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-device-sources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-example.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-example-javadoc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-example-sources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-gpio-extension.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-gpio-extension-javadoc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-gpio-extension-sources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-service.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-service-javadoc.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="C:/Users/Dirk/Downloads/pi4j-1.0/pi4j-1.0/lib/pi4j-service-sources.jar" />
+		</jar>
+		<scp file="C:/eclipseLuna/workspace/Gyro/gyro.jar" trust="true" todir="pi@raspberrypi:" password="raspberry" />
+
+
+	</target>
+</project>
