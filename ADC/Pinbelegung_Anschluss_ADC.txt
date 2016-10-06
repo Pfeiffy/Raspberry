@@ -1,0 +1,23 @@
+16 (VDD)  --> 1
+15 (VREF) --> 1 oder besser externes 5V
+14 (AGND) --> 6
+13 (SCLK) --> 23
+12 (DOUT) --> 21
+11 (DIN) --> 19
+10 (CS)  --> 24 bei GPIO10, 26 bei GPIO 11
+9 (DGND) --> 6 bzw. 9
+
+Widerstand:
+16/15 -----------
+				|
+				|
+				R 10 kOhm
+				|
+				|
+				 --------- an CH0 PIN1 an MCP3008
+				|
+				|
+				abhängiger Widerstand
+				|
+				|
+9----------------
