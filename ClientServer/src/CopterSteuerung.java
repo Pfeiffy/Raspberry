@@ -27,6 +27,7 @@ public class CopterSteuerung {
 					CopterSteuerung window = new CopterSteuerung();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
+					
 					e.printStackTrace();
 				}
 			}
