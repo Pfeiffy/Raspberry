@@ -68,7 +68,8 @@ public class pwmMot {
 	static int roll = 1563;
 	static int aux1 = 1100;
 	static int aux2 = 1100;
-	//... und es müssen Pitch und Roll auf 1500us stehen und Throttle auf 1000 und Yaw auf 2000. 
+	// ... und es müssen Pitch und Roll auf 1500us stehen und Throttle auf 1000
+	// und Yaw auf 2000.
 
 	@SuppressWarnings("resource")
 	public static void main(String args[]) throws Exception {
@@ -89,12 +90,10 @@ public class pwmMot {
 		final int pulseDuration = 600;
 
 		int init = 1000;
-		if (calib)
-			Kalibrieren(gpioProvider);
 
 		gpioProvider.setPwm(PCA9685Pin.PWM_00, init);
 		System.out.println("PWM: " + init + " init");
-		Thread.sleep(1000);
+		Thread.sleep(500);
 		// Set 0.9ms pulse (R/C Servo minimum position)
 
 		new Thread() {
@@ -127,10 +126,22 @@ public class pwmMot {
 						if (input.equalsIgnoreCase("x")) {
 							yaw = pitch = throttle = roll = aux1 = aux2 = 1000;
 							System.exit(0);
-						} else if (input.equalsIgnoreCase("a")) {
-							yaw = 2000;
+						}
+						// arm
+						else if (input.equalsIgnoreCase("a")) {
+							yaw = 1000;
 							aux1 = 1500;
 							throttle = 1060;
+						}
+						// disarm
+						else if (input.equalsIgnoreCase("d")) {
+							yaw = 1000;
+							aux1 = 1000;
+							throttle = 1060;
+						} else if (input.equalsIgnoreCase("t+")) {
+							throttle+= 100;
+						} else if (input.equalsIgnoreCase("t-")) {
+							throttle-= 100;
 						} else if (input.indexOf(",") != -1) {
 							String[] pwms = input.split(",");
 							yaw = Integer.parseInt(pwms[0]);
@@ -162,27 +173,6 @@ public class pwmMot {
 			}
 		}.start();
 
-	}
-
-	private static void Kalibrieren(final PCA9685GpioProvider gpioProvider) throws InterruptedException {
-		{
-			System.out.println("starte kalibrierung......");
-			int calib = 2000;
-			gpioProvider.setPwm(PCA9685Pin.PWM_00, calib);
-			gpioProvider.setPwm(PCA9685Pin.PWM_01, calib);
-			gpioProvider.setPwm(PCA9685Pin.PWM_02, calib);
-			gpioProvider.setPwm(PCA9685Pin.PWM_03, calib);
-			Thread.sleep(10000);
-			calib = 1000;
-			gpioProvider.setPwm(PCA9685Pin.PWM_00, calib);
-			gpioProvider.setPwm(PCA9685Pin.PWM_01, calib);
-			gpioProvider.setPwm(PCA9685Pin.PWM_02, calib);
-			gpioProvider.setPwm(PCA9685Pin.PWM_03, calib);
-			Thread.sleep(2000);
-			System.out.println("Calibrierung beendet");
-			System.exit(0);
-
-		}
 	}
 
 	private static int checkForOverflow(int position) {
