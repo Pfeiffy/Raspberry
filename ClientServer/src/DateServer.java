@@ -25,41 +25,56 @@ public class DateServer {
 	static int setFlyMode = 320; // Flugmodus setzen, wie women, angel
 
 	public static void main(String[] args) throws IOException {
-		ServerSocket listener = new ServerSocket(9090);
-		try {
-			System.out.println("Server gestartet");
-			while (true) {
-				Socket socket = listener.accept();
+
+		new Thread() {
+			public void run() {
 				try {
-					while (true) {
-						BufferedReader input = new BufferedReader(
-								new InputStreamReader(socket.getInputStream()));
-						String answer = input.readLine();
-						System.out.println(answer + "(server)");
-						String rueckAntwort = befehlsverarbeitung(answer);
-						// Rückantwort senden
-						PrintWriter out = new PrintWriter(
-								socket.getOutputStream(), true);
-						out.println(rueckAntwort);
+					ServerSocket listener = new ServerSocket(9090);
+					try {
+						System.out.println("Server gestartet");
 
-					}
+						while (true) {
+							Socket socket = listener.accept();
+							try {
+								while (true) {
 
-				} catch (SocketException e) {
-					// FA Wird geworfen, wenn die Verbindung vom Client beendet
-					// wurde.
-					// FA Aus diesem Grund, machen wir hier nichts, auser dass
-					// wir den
-					// FA Socket im finally Block aufrÃ¤umen.
-				} finally {
-					if (null != socket && false == socket.isClosed()) {
-						socket.close();
+									BufferedReader input = new BufferedReader(
+											new InputStreamReader(socket.getInputStream()));
+									String answer = input.readLine();
+									System.out.println(answer + "(server)");
+									String rueckAntwort = befehlsverarbeitung(answer);
+									// Rückantwort senden
+									PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+									out.println(rueckAntwort);
+
+								}
+
+							} catch (SocketException e) {
+								// FA Wird geworfen, wenn die Verbindung vom
+								// Client beendet
+								// wurde.
+								// FA Aus diesem Grund, machen wir hier nichts,
+								// auser dass
+								// wir den
+								// FA Socket im finally Block aufrÃ¤umen.
+							} finally {
+								if (null != socket && false == socket.isClosed()) {
+									socket.close();
+								}
+								socket = null;
+							}
+						}
+					} finally {
+						listener.close();
 					}
-					socket = null;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				System.out.println("Thread Running");
 			}
-		} finally {
-			listener.close();
-		}
+		}.start();
+
 	}
 
 	private static String befehlsverarbeitung(String answer) {
@@ -93,14 +108,13 @@ public class DateServer {
 	}
 
 	private static void anzeigeMotorDaten() {
-		 pitch = 0;
-		 yaw = 0;
-		 roll = 0;
-		 throttle = 0;
-		 aux1 = 0;
-		 aux2 = 0;
-
-		
+		System.out.println(" anzeigeMotorDaten: ");
+		System.out.println(" pitch: " + pitch);
+		System.out.println(" yaw: " + yaw);
+		System.out.println(" roll: " + roll);
+		System.out.println(" throttle: " + throttle);
+		System.out.println(" aux1: " + aux1);
+		System.out.println(" aux2: " + aux2);
 	}
 
 	private static void resetMotorsFail() {
@@ -131,10 +145,5 @@ public class DateServer {
 		aux2 = Integer.parseInt(answer.substring(26, 30));
 
 	}
-	
-	
-	
-	
-	
-	
+
 }
