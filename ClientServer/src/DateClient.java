@@ -15,19 +15,16 @@ public class DateClient {
 	 * Runs the client as an application. First it displays a dialog box asking
 	 * for the IP address or hostname of a host running the date server, then
 	 * connects to it and displays the date that it serves.
-	 * @throws InterruptedException 
+	 * 
+	 * @throws InterruptedException
 	 */
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws IOException,
+			InterruptedException {
 		Socket s = new Socket("localhost", 9090);
 		PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-		// das gibt er zum Server rüber
-		for (int count = 0; count < 10; count++) {
-			out.println("Dies ist ein Befehl:" + count);
-			BufferedReader input = new BufferedReader(new InputStreamReader(
-					s.getInputStream()));
-			System.out.println("Client: " + input.readLine());
-			Thread.sleep(500);
-		}
-		// System.exit(0);
+		out.println("$R<300123412341234123412341234");
+		BufferedReader input = new BufferedReader(new InputStreamReader(
+				s.getInputStream()));
+		System.out.println("Client: " + input.readLine());
 	}
 }
