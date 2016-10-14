@@ -9,7 +9,7 @@ public class Eingabe {
 	public Eingabe() {
 		new Thread() {
 			public void run() {
-				while (true) {
+				while (true) { 
 					try {
 						sleep(20);
 					} catch (InterruptedException e) {
