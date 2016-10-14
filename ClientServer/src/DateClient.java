@@ -22,7 +22,7 @@ public class DateClient {
 		PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 		// das gibt er zum Server rüber
 		for (int count = 0; count < 10; count++) {
-			out.println("$111112222:" + count);
+			out.println("Dies ist ein Befehl:" + count);
 			BufferedReader input = new BufferedReader(new InputStreamReader(
 					s.getInputStream()));
 			System.out.println("Client: " + input.readLine());
