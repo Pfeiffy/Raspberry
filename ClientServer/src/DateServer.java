@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Date;
 
 /**
@@ -27,7 +28,7 @@ public class DateServer {
                 	BufferedReader input =
             	            new BufferedReader(new InputStreamReader(socket.getInputStream()));
             	        String answer = input.readLine();
-            	        System.out.println(answer);
+            	        System.out.println(answer + "(server");
                         PrintWriter out =
                                 new PrintWriter(socket.getOutputStream(), true);
                             out.println(answer+ "ist angekommen und verarbeitet");
@@ -35,8 +36,16 @@ public class DateServer {
                             System.out.println(">");
                 	}
                     
+                } catch (SocketException e) {
+                	// FA Wird geworfen, wenn die Verbindung vom Client beendet wurde.
+                	// FA Aus diesem Grund, machen wir hier nichts, auser dass wir den 
+                	// FA Socket im finally Block aufräumen.
+                	e.printStackTrace();
                 } finally {
-                    socket.close();
+                	if (null != socket && false == socket.isClosed()) {
+                    	socket.close();
+                	}
+                	socket = null;
                 }
             }
         }
